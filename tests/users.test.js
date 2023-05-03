@@ -113,7 +113,7 @@ describe('/users', () => {
     });
 
     describe('PATCH users/:id', () => {
-      it.only('updates a user by id', async () => {
+      it('updates a user by id', async () => {
         const user = users[0];
         const response = await request(app)
           .patch(`/users/${user.id}`)
