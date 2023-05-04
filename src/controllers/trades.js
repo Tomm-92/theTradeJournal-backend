@@ -45,26 +45,26 @@ const updateTradeRecord = async (req, res) => {
     const { id } = req.params;
     const {
       currency_crypto,
+      trade_direction,
+      trade_outcome,
       trade_open_date,
       trade_open_time,
       trade_close_date,
       trade_close_time,
       entry_price,
       exit_price,
-      percentage_gain_loss,
-      total_drawdown,
       observations,
     } = req.body;
     const updateData = {
       currency_crypto: currency_crypto,
+      trade_direction: trade_direction,
+      trade_outcome: trade_outcome,
       trade_open_date: trade_open_date,
       trade_open_time: trade_open_time,
       trade_close_date: trade_close_date,
       trade_close_time: trade_close_time,
       entry_price: entry_price,
       exit_price: exit_price,
-      percentage_gain_loss: percentage_gain_loss,
-      total_drawdown: total_drawdown,
       observations: observations,
     };
 
