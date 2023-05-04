@@ -1,9 +1,58 @@
 module.exports = (connection, DataTypes) => {
   const schema = {
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
-    email_address: DataTypes.STRING,
-    password: DataTypes.STRING,
+    first_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^[\p{L}\p{M}\s]+$/u,
+          msg: 'First name must only contain letters and spaces',
+        },
+        len: {
+          args: [1, 50],
+          msg: 'First name length must be between 1 and 50 characters',
+        },
+      },
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^[\p{L}\p{M}\s]+$/u,
+          msg: 'Last name must only contain letters and spaces',
+        },
+        len: {
+          args: [1, 50],
+          msg: 'Last name length must be between 1 and 50 characters',
+        },
+      },
+    },
+    email_address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: 'Invalid email address format',
+        },
+      },
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: {
+          args: [6, 50],
+          msg: 'Password must be at least 6 characters long',
+        },
+        matches: {
+          args: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9a-zA-Z]).*$/,
+          msg: 'Password must contain at least one uppercase letter and one special character',
+        },
+      },
+    },
   };
 
   const UsersModel = connection.define('Users', schema);
