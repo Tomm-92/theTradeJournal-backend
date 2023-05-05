@@ -15,6 +15,9 @@ const setupDatabase = () => {
   const Users = UsersModel(connection, Sequelize);
   const Trades = TradesModel(connection, Sequelize);
 
+  Users.hasMany(Trades);
+  Trades.belongsTo(Users);
+
   connection.sync({ alter: true });
   return {
     Users,

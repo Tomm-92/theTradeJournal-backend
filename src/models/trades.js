@@ -150,5 +150,6 @@ module.exports = (connection, DataTypes) => {
   };
 
   const TradesModel = connection.define('Trades', schema);
+
   return TradesModel;
 };

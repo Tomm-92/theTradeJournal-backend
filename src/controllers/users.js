@@ -1,4 +1,4 @@
-const { Users } = require('../models');
+const { Users, Trades } = require('../models');
 
 const createUser = async (req, res) => {
   const newUser = await Users.create(req.body);
@@ -16,14 +16,17 @@ const getUsers = async (_, res) => {
 };
 
 const getUserById = async (req, res) => {
-
   try {
     const { id } = req.params;
     const user = await Users.findByPk(id, {
-      attributes: { exclude: 'password'},
+      attributes: { exclude: 'password' },
+      include: {
+        model: Trades,
+        attributes: { exclude: ['user_id', 'createdAt', 'updatedAt'] },
+      },
     });
-    if ( user == null) {
-      res.status(404).json({ error: `The user could not be found.`});
+    if (user == null) {
+      res.status(404).json({ error: `The user could not be found.` });
     }
     res.status(200).json(user);
   } catch (err) {
@@ -59,9 +62,9 @@ const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedRows = await Users.destroy({ where: { id }});
+    const deletedRows = await Users.destroy({ where: { id } });
 
-    if(!deletedRows) {
+    if (!deletedRows) {
       res.status(404).json({ message: 'User not found' });
     } else {
       res.status(204).send();
@@ -70,6 +73,6 @@ const deleteUser = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: 'Internal server error' });
   }
-}
+};
 
 module.exports = { createUser, deleteUser, getUsers, getUserById, updateUser };
