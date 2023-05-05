@@ -1,15 +1,22 @@
 const { Trades } = require('../models');
 
 const createTrade = async (req, res) => {
-  const newTrade = await Trades.create(req.body);
-  res.status(201).json(newTrade);
+  try {
+    const newTrade = await Trades.create(req.body);
+    res.status(201).json(newTrade);
+  } catch (e) {
+    res.status(500).json(e.message);
+  }
 };
 
 const getAllTrades = async (req, res) => {
-  const newTrade = await Trades.findAll();
-  res.status(200).json(newTrade);
+  try {
+    const newTrade = await Trades.findAll();
+    res.status(200).json(newTrade);
+  } catch (e) {
+    res.status(500).json(e.message);
+  }
 };
-
 const getTradeById = async (req, res) => {
   try {
     const tradeId = req.params.id;
