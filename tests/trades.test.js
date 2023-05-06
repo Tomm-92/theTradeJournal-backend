@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const { expect, assert } = require('chai');
 const request = require('supertest');
 const { Trades } = require('../src/models');
 const app = require('../src/app');
@@ -177,6 +177,344 @@ describe('/trades', () => {
 
         expect(response.status).to.equal(404);
         expect(response.body.error).to.equal('The trade does not exist.');
+      });
+    });
+
+    describe('/tradeHistory validations', () => {
+      it('should not allow empty currency_crypto', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: '',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-04-29',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-30',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'A currency or crypto must be provided'
+          );
+        }
+      });
+      it('should not allow a null value currency_crypto', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'Null',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-04-29',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-30',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'The currency or crypto cannot be null'
+          );
+        }
+      });
+
+      it('should not allow an empty value for trade_direction', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: '',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-04-29',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-30',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'A trade direction must be provided'
+          );
+        }
+      });
+
+      it('should only allow a value of long or short for trade_direction', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Null',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-04-29',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-30',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'Trade direction must either be long or short'
+          );
+        }
+      });
+
+      it('should not allow an empty value for trade_outcome', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: '',
+            trade_open_date: '2023-04-29',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-30',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'A trade outcome must be provided'
+          );
+        }
+      });
+
+      it('should only allow a value of win or lose for trade_outcome', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-04-29',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-30',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'Trade outcome must either be win or lose'
+          );
+        }
+      });
+      it('should not allow an empty value for trade_open_date', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-05',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'A trade open date must be provided'
+          );
+        }
+      });
+      it('should not allow a trade_open_date value which is in the future', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2050-05-05',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-30',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'Trade open date cannot be in the future'
+          );
+        }
+      });
+      it('should not allow an empty value for trade_close_date', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-05-01',
+            trade_open_time: '13:05:00',
+            trade_close_date: '',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'A trade close date must be provided'
+          );
+        }
+      });
+      it('should not allow a trade_open_date value which is in the future', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-05-05',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2050-04-30',
+            trade_close_time: '13:05:00',
+            entry_price: '1.577',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'Trade close date cannot be in the future'
+          );
+        }
+      });
+      it('should not allow an empty value for entry_price', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-04-05',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-29',
+            trade_close_time: '13:05:00',
+            entry_price: '',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'An entry price must be provided'
+          );
+        }
+      });
+      it('should not allow an incorrect format for entry_price', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-05-05',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-29',
+            trade_close_time: '13:05:00',
+            entry_price: 'text',
+            exit_price: '1.55',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'A number must be provided'
+          );
+        }
+      });
+      it('should not allow an empty value for exit_price', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-04-05',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-29',
+            trade_close_time: '13:05:00',
+            entry_price: '1.55',
+            exit_price: '',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'An exit price must be provided'
+          );
+        }
+      });
+      it('should not allow an incorrect format for exit_price', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-05-05',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-29',
+            trade_close_time: '13:05:00',
+            entry_price: '1000.4567',
+            exit_price: 'text',
+            observations: 'This is just a test',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'A number must be provided'
+          );
+        }
+      });
+      it('should ensure the observation entered is no longer than 500 characters', async () => {
+        try {
+          await Trades.create({
+            currency_crypto: 'USD/JPY',
+            trade_direction: 'Long',
+            trade_outcome: 'Lose',
+            trade_open_date: '2023-05-05',
+            trade_open_time: '13:05:00',
+            trade_close_date: '2023-04-29',
+            trade_close_time: '13:05:00',
+            entry_price: '1000.4567',
+            exit_price: '1.55',
+            observations:
+              'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus',
+          });
+        } catch (error) {
+          assert.strictEqual(error.name, 'SequelizeValidationError');
+          assert.strictEqual(
+            error.errors[0].message,
+            'Entry length cannot exceed 500 characters'
+          );
+        }
       });
     });
   });

@@ -10,7 +10,7 @@ module.exports = (connection, DataTypes) => {
         },
         notNull: {
           args: [true],
-          msg: 'A currency or crypto must be provided',
+          msg: 'The currency or crypto cannot be null',
         },
       },
     },
@@ -19,10 +19,6 @@ module.exports = (connection, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          args: [true],
-          msg: 'A trade direction must be provided',
-        },
-        notNull: {
           args: [true],
           msg: 'A trade direction must be provided',
         },
@@ -40,10 +36,6 @@ module.exports = (connection, DataTypes) => {
           args: [true],
           msg: 'A trade outcome must be provided',
         },
-        notNull: {
-          args: [true],
-          msg: 'A trade outcome must be provided',
-        },
         isIn: {
           args: [['Win', 'Lose']],
           msg: 'Trade outcome must either be win or lose',
@@ -55,10 +47,6 @@ module.exports = (connection, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          args: [true],
-          msg: 'A trade open date must be provided',
-        },
-        notNull: {
           args: [true],
           msg: 'A trade open date must be provided',
         },
@@ -87,10 +75,6 @@ module.exports = (connection, DataTypes) => {
         isDate: {
           args: [true],
           msg: 'Must be a valid date of format YYYY-MM-DD',
-        },
-        notNull: {
-          args: [true],
-          msg: 'A trade close date must be provided',
         },
         customValidator(value) {
           if (new Date(value) > new Date()) {

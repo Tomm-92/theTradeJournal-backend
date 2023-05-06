@@ -42,8 +42,8 @@ const deleteTradeById = async (req, res) => {
     } else {
       res.status(404).json({ error: 'The trade does not exist.' });
     }
-  } catch (err) {
-    res.status(500).json(err.message);
+  } catch (e) {
+    res.status(500).json(e.message);
   }
 };
 
@@ -82,8 +82,8 @@ const updateTradeRecord = async (req, res) => {
     }
 
     res.status(200).json(updateRows);
-  } catch (err) {
-    res.status(500).json(err.message);
+  } catch (e) {
+    res.status(500).json(e.message);
   }
 };
 

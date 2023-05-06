@@ -9,8 +9,4 @@ app.use(express.json());
 app.use('/users', usersRouter);
 app.use('/tradehistory', tradesRouter);
 
-app.get('/getData', (req, res) => {
-  res.send('Hello World');
-});
-
 module.exports = app;
