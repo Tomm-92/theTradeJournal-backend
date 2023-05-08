@@ -1,8 +1,12 @@
 const { Users, Trades } = require('../models');
 
 const createUser = async (req, res) => {
-  const newUser = await Users.create(req.body);
-  res.status(201).json(newUser);
+  try {
+    const newUser = await Users.create(req.body);
+    res.status(201).json(newUser);
+  } catch (e) {
+    res.status(500).json(e.message);
+  }
 };
 
 const getUsers = async (_, res) => {
