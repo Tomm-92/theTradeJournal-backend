@@ -61,6 +61,7 @@ const updateTradeRecord = async (req, res) => {
       entry_price,
       exit_price,
       observations,
+      fireBaseId,
     } = req.body;
     const updateData = {
       currency_crypto: currency_crypto,
@@ -73,6 +74,7 @@ const updateTradeRecord = async (req, res) => {
       entry_price: entry_price,
       exit_price: exit_price,
       observations: observations,
+      fireBaseId: fireBaseId,
     };
 
     const [updateRows] = await Trades.update(updateData, { where: { id } });

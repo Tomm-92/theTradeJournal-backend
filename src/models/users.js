@@ -41,7 +41,7 @@ module.exports = (connection, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      //allowNull: false,
       validate: {
         len: {
           args: [6, 50],
@@ -52,6 +52,9 @@ module.exports = (connection, DataTypes) => {
           msg: 'Password must contain at least one uppercase letter and one special character',
         },
       },
+    },
+    fireBaseUid: {
+      type: DataTypes.STRING,
     },
   };
 

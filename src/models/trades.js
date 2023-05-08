@@ -131,6 +131,9 @@ module.exports = (connection, DataTypes) => {
         },
       },
     },
+    fireBaseId: {
+      type: DataTypes.STRING,
+    },
   };
 
   const TradesModel = connection.define('Trades', schema);
