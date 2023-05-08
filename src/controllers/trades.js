@@ -77,13 +77,16 @@ const updateTradeRecord = async (req, res) => {
       fireBaseId: fireBaseId,
     };
 
-    const [updateRows] = await Trades.update(updateData, { where: { id } });
+    const [updateRows, trades] = await Trades.update(updateData, {
+      where: { id },
+      returning: true,
+    });
 
     if (!updateRows) {
       res.status(404).json({ error: 'The trade does not exist.' });
     }
 
-    res.status(200).json(updateRows);
+    res.status(200).json(trades[0]);
   } catch (e) {
     res.status(500).json(e.message);
   }
