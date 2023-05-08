@@ -2,7 +2,7 @@ module.exports = (connection, DataTypes) => {
   const schema = {
     first_name: {
       type: DataTypes.STRING,
-      // allowNull: false,
+      allowNull: false,
       validate: {
         is: {
           args: /^[\p{L}\p{M}\s]+$/u,
@@ -16,7 +16,7 @@ module.exports = (connection, DataTypes) => {
     },
     last_name: {
       type: DataTypes.STRING,
-      //allowNull: false,
+      allowNull: false,
       validate: {
         is: {
           args: /^[\p{L}\p{M}\s]+$/u,
