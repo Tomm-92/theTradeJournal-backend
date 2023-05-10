@@ -20,10 +20,6 @@ const setupDatabase = () => {
     sourceKey: 'firebase_uid',
   });
 
-  Trades.belongsTo(Users, {
-    foreignKey: 'firebase_uid',
-    sourceKey: 'firebase_uid',
-  });
   connection.sync({ alter: true });
   return {
     Users,
