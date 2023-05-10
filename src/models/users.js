@@ -41,17 +41,6 @@ module.exports = (connection, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      //allowNull: false,
-      validate: {
-        len: {
-          args: [6, 50],
-          msg: 'Password must be at least 6 characters long',
-        },
-        matches: {
-          args: /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9a-zA-Z]).*$/,
-          msg: 'Password must contain at least one uppercase letter and one special character',
-        },
-      },
     },
     fireBaseUid: {
       type: DataTypes.STRING,
