@@ -42,7 +42,7 @@ module.exports = (connection, DataTypes) => {
     password: {
       type: DataTypes.STRING,
     },
-    fireBaseUid: {
+    firebase_uid: {
       type: DataTypes.STRING,
     },
   };
