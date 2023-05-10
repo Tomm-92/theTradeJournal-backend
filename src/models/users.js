@@ -53,8 +53,10 @@ module.exports = (connection, DataTypes) => {
         },
       },
     },
-    fireBaseUid: {
+    firebase_uid: {
       type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
   };
 

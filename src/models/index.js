@@ -15,9 +15,15 @@ const setupDatabase = () => {
   const Users = UsersModel(connection, Sequelize);
   const Trades = TradesModel(connection, Sequelize);
 
-  Users.hasMany(Trades);
-  Trades.belongsTo(Users);
+  Users.hasMany(Trades, {
+    foreignKey: 'firebase_uid',
+    sourceKey: 'firebase_uid',
+  });
 
+  Trades.belongsTo(Users, {
+    foreignKey: 'firebase_uid',
+    sourceKey: 'firebase_uid',
+  });
   connection.sync({ alter: true });
   return {
     Users,
