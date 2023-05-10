@@ -44,6 +44,8 @@ module.exports = (connection, DataTypes) => {
     },
     firebase_uid: {
       type: DataTypes.STRING,
+      primaryKey: true,
+      unique: true,
     },
   };
 
