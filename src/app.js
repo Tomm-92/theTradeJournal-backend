@@ -26,4 +26,18 @@ app.get('/api', (req, res) => {
     .then((value) => res.json(value.data))
     .catch((err) => console.log(err));
 });
+
+const apiFx = axios.create({
+  baseURL: 'https://api.currencybeacon.com/v1/',
+});
+const endpoint = 'live';
+const api_key = 'test';
+
+app.get('/apifx', (req, res) => {
+  apiFx
+    .get(`latest/${endpoint}?api_key=${api_key}`)
+    .then((response) => response.data)
+    .then((value) => res.json(value.data))
+});
+
 module.exports = app;
