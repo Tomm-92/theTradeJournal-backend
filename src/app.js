@@ -26,4 +26,16 @@ app.get('/api', (req, res) => {
     .then((value) => res.json(value.data))
     .catch((err) => console.log(err));
 });
+
+const newsApi = axios.create({
+  method: 'GET',
+  baseURL: 'https://content.guardianapis.com',
+});
+app.get('/newsapi', (req, res) => {
+  newsApi(`/search?api-key=${process.env.NEWS_API_KEY}`)
+    .then((response) => response)
+    .then((value) => res.json(value.data))
+    .catch((err) => console.log(err));
+});
+
 module.exports = app;
