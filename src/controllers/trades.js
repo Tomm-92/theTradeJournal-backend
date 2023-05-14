@@ -1,22 +1,25 @@
 const { Trades } = require('../models');
 
 const createTrade = async (req, res) => {
-  try {
-    const newTrade = await Trades.create(req.body);
-    res.status(201).json(newTrade);
-  } catch (e) {
-    res.status(500).json(e.message);
-  }
+  const newTrade = await Trades.create(req.body);
+  res.status(201).json(newTrade);
 };
 
 const getAllTrades = async (req, res) => {
   try {
-    const newTrade = await Trades.findAll();
-    res.status(200).json(newTrade);
-  } catch (e) {
-    res.status(500).json(e.message);
+    const firebaseUid = req.query.firebase_uid; // Retrieve the firebase_uid from the query parameter
+    const trades = await Trades.findAll({ where: { firebase_uid: firebaseUid } });
+
+    if (trades.length === 0) {
+      return res.status(404).json({ error: 'No trades found for the specified user.' });
+    }
+
+    res.status(200).json(trades);
+  } catch (err) {
+    res.status(500).json(err.message);
   }
 };
+
 const getTradeById = async (req, res) => {
   try {
     const tradeId = req.params.id;
@@ -42,8 +45,8 @@ const deleteTradeById = async (req, res) => {
     } else {
       res.status(404).json({ error: 'The trade does not exist.' });
     }
-  } catch (e) {
-    res.status(500).json(e.message);
+  } catch (err) {
+    res.status(500).json(err.message);
   }
 };
 
@@ -52,43 +55,38 @@ const updateTradeRecord = async (req, res) => {
     const { id } = req.params;
     const {
       currency_crypto,
-      trade_direction,
-      trade_outcome,
       trade_open_date,
       trade_open_time,
       trade_close_date,
       trade_close_time,
       entry_price,
       exit_price,
+      percentage_gain_loss,
+      total_drawdown,
       observations,
-      fireBaseId,
     } = req.body;
     const updateData = {
       currency_crypto: currency_crypto,
-      trade_direction: trade_direction,
-      trade_outcome: trade_outcome,
       trade_open_date: trade_open_date,
       trade_open_time: trade_open_time,
       trade_close_date: trade_close_date,
       trade_close_time: trade_close_time,
       entry_price: entry_price,
       exit_price: exit_price,
+      percentage_gain_loss: percentage_gain_loss,
+      total_drawdown: total_drawdown,
       observations: observations,
-      fireBaseId: fireBaseId,
     };
 
-    const [updateRows, trades] = await Trades.update(updateData, {
-      where: { id },
-      returning: true,
-    });
+    const [updateRows] = await Trades.update(updateData, { where: { id } });
 
     if (!updateRows) {
       res.status(404).json({ error: 'The trade does not exist.' });
     }
 
-    res.status(200).json(trades[0]);
-  } catch (e) {
-    res.status(500).json(e.message);
+    res.status(200).json(updateRows);
+  } catch (err) {
+    res.status(500).json(err.message);
   }
 };
 
