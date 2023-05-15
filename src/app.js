@@ -8,6 +8,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use('/users', usersRouter);
 app.use('/tradehistory', tradesRouter);
 
