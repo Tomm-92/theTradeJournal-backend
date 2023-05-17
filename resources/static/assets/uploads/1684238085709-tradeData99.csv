@@ -1,0 +1,2 @@
+currency_crypto,trade_direction,trade_outcome,trade_open_date,trade_open_time,trade_close_date,trade_close_time,entry_price,exit_price,observations,firebase_uid,createdAt,updatedAt
+EUR/USD,Long,Lose,2023-05-10,01:50:00,2023-05-10,04:53:00,2000,5000,test1,qOOBL68EYUgeCy41Hf3wLSalqe83,2023-05-12 17:40:44.493+00,2023-05-12 17:40:44.493+00

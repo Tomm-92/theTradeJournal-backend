@@ -1,4 +1,6 @@
-const Trades = require('../models/trades.js');
+const db = require('../models');
+const Trades = db.Trades;
+
 const { createReadStream } = require('fs');
 const { parse } = require('fast-csv');
 const { Parser: CsvParser } = require('json2csv');
@@ -6,6 +8,7 @@ const { Parser: CsvParser } = require('json2csv');
 const upload = async (req, res) => {
   try {
     if (req.file == undefined) {
+      console.log(req);
       return res.status(400).send('Please upload a CSV file!');
     }
 
