@@ -3,7 +3,6 @@ const Trades = db.Trades;
 
 const { createReadStream } = require('fs');
 const { parse } = require('fast-csv');
-const { Parser: CsvParser } = require('json2csv');
 
 const upload = async (req, res) => {
   try {
@@ -11,6 +10,9 @@ const upload = async (req, res) => {
       console.log(req);
       return res.status(400).send('Please upload a CSV file!');
     }
+
+    console.log('params', req.params);
+    console.log('fuid', req.body.firebase_uid);
 
     let trades = [];
     let path = './resources/static/assets/uploads/' + req.file.filename;
@@ -48,63 +50,6 @@ const upload = async (req, res) => {
   }
 };
 
-const download = (_req, res) => {
-  Trades.findAll().then((objs) => {
-    let trades = [];
-
-    objs.forEach((obj) => {
-      const {
-        id,
-        currency_crypto,
-        trade_direction,
-        trade_outcome,
-        trade_open_date,
-        trade_open_time,
-        trade_close_date,
-        trade_close_time,
-        entry_price,
-        exit_price,
-        observations,
-      } = obj;
-      trades.push({
-        id,
-        currency_crypto,
-        trade_direction,
-        trade_outcome,
-        trade_open_date,
-        trade_open_time,
-        trade_close_date,
-        trade_close_time,
-        entry_price,
-        exit_price,
-        observations,
-      });
-    });
-
-    const csvFields = [
-      'id',
-      'currency_crypto',
-      'trade_direction',
-      'trade_outcome',
-      'trade_open_date',
-      'trade_open_time',
-      'trade_close_date',
-      'trade_close_time',
-      'entry_price',
-      'exit_price',
-      'observations',
-    ];
-    const csvParser = new CsvParser({ csvFields });
-    const csvData = csvParser.parse(trades);
-
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', 'attachment; filename=trades.csv');
-
-    res.status(200).end(csvData);
-  });
-};
-
 module.exports = {
   upload,
-  download,
 };

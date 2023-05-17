@@ -11,7 +11,6 @@ router.get('/:id', tradesController.getTradeById);
 router.delete('/:id', tradesController.deleteTradeById);
 router.patch('/:id', tradesController.updateTradeRecord);
 router.post('/csv/upload', uploadFile.single('file'), csvController.upload);
-router.get('/csv/download', csvController.download);
 router.get('/', getTrades);
 
 module.exports = router;

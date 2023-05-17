@@ -29,39 +29,4 @@ app.get('/api', (req, res) => {
     .catch((err) => console.log(err));
 });
 
-const fxApi = axios.create({
-  method: 'GET',
-  baseURL: 'https://api.currencybeacon.com',
-});
-
-app.get('/usfx', (req, res) => {
-  fxApi(
-    `/v1/latest?base=USD&symbols=JPY,CHF,CAD&api_key=${process.env.FOREX_API_KEY}`
-  )
-    .then((response) => response)
-    .then((value) => res.json(value.data))
-    .catch((err) => console.log(err));
-});
-
-app.get('/aufx', (req, res) => {
-  fxApi(`/v1/latest?base=AUD&symbols=USD&api_key=${process.env.FOREX_API_KEY}`)
-    .then((response) => response)
-    .then((value) => res.json(value.data))
-    .catch((err) => console.log(err));
-});
-
-app.get('/nufx', (req, res) => {
-  fxApi(`/v1/latest?base=NZD&symbols=USD&api_key=${process.env.FOREX_API_KEY}`)
-    .then((response) => response)
-    .then((value) => res.json(value.data))
-    .catch((err) => console.log(err));
-});
-
-app.get('/gbpfx', (req, res) => {
-  fxApi(`/v1/latest?base=GBP&symbols=USD&api_key=${process.env.FOREX_API_KEY}`)
-    .then((response) => response)
-    .then((value) => res.json(value.data))
-    .catch((err) => console.log(err));
-});
-
 module.exports = app;
