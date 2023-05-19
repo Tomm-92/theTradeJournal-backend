@@ -16,7 +16,7 @@ const api = axios.create({
   method: 'GET',
   baseURL: 'https://pro-api.coinmarketcap.com',
   headers: {
-    'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY,
+    'X-CMC_PRO_API_KEY': '2c456edd-fe5b-45db-8630-95abd64acce7',
     Accept: 'application/json',
     'Accept-Encoding': 'deflate, gzip',
   },
