@@ -12,10 +12,14 @@ const createTrade = async (req, res) => {
 const getAllTrades = async (req, res) => {
   try {
     const firebaseUid = req.query.firebase_uid;
-    const newTrade = await Trades.findAll({ where: { firebase_uid: firebaseUid } });
+    const newTrade = await Trades.findAll({
+      where: { firebase_uid: firebaseUid },
+    });
 
-    if(newTrade.length === 0) {
-      return res.status(404).json({ error: 'No trades found for the specific user.' });
+    if (newTrade.length === 0) {
+      return res
+        .status(404)
+        .json({ error: 'No trades found for the specific user.' });
     }
 
     res.status(200).json(newTrade);
