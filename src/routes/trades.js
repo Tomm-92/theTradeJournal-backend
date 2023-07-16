@@ -4,10 +4,22 @@ const tradesController = require('../controllers/trades');
 const csvController = require('../controllers/csv.controller.js');
 const getTrades = require('../controllers/trades.controller.js');
 const uploadFile = require('../middleware/upload.js');
+require('dotenv').config();
 
-router.post('/', tradesController.createTrade);
-router.get('/', tradesController.getAllTrades);
-router.get('/:id', tradesController.getTradeById);
+const isAuth = (req, res, next) => {
+  const auth = req.headers.authorization;
+  if (auth === process.env.TRADES_API_KEY) {
+    next();
+  } else {
+    res.status(401);
+    res.send('Access denied');
+  }
+};
+
+router.get('/', isAuth, tradesController.getAllTrades);
+router.post('/', isAuth, tradesController.createTrade);
+router.get('/', isAuth, tradesController.getAllTrades);
+router.get('/:id', isAuth, tradesController.getTradeById);
 router.delete('/:id', tradesController.deleteTradeById);
 router.patch('/:id', tradesController.updateTradeRecord);
 router.post('/csv/upload', uploadFile.single('file'), csvController.upload);
