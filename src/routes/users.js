@@ -20,6 +20,6 @@ router.get('/:id', isAuth, usersController.getUserById);
 
 router.patch('/:id', isAuth, usersController.updateUser);
 
-router.post('/', isAuth, usersController.createUser);
+router.post('/', usersController.createUser);
 
 module.exports = router;
