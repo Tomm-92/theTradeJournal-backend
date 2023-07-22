@@ -9,7 +9,7 @@ const createUser = async (req, res) => {
   }
 };
 
-const getUsers = async (_, res) => {
+const getUsers = async (req, res) => {
   try {
     const users = await Users.findAll();
     res.status(200).json(users);

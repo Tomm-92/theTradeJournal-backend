@@ -27,6 +27,7 @@ const getAllTrades = async (req, res) => {
     res.status(500).json(e.message);
   }
 };
+
 const getTradeById = async (req, res) => {
   try {
     const tradeId = req.params.id;

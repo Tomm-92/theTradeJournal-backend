@@ -22,9 +22,25 @@ const api = axios.create({
   },
 });
 
+const newsapi = axios.create({
+  method: 'GET',
+  baseURL: 'https://api.newscatcherapi.com/',
+  headers: {
+    'x-api-key': process.env.NEWSCATCHER_API_KEY,
+    Accept: 'application/json',
+    'Accept-Encoding': 'deflate, gzip',
+  },
+});
+
 app.get('/api', (req, res) => {
   api('/v1/cryptocurrency/listings/latest')
     .then((response) => response.data)
+    .then((value) => res.json(value.data))
+    .catch((err) => console.log(err));
+});
+
+app.get('/newsapi', (req, res) => {
+  newsapi(`/v2/latest_headlines`)
     .then((value) => res.json(value.data))
     .catch((err) => console.log(err));
 });
