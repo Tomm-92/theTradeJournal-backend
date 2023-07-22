@@ -20,8 +20,8 @@ router.get('/', isAuth, tradesController.getAllTrades);
 router.post('/', isAuth, tradesController.createTrade);
 router.get('/', isAuth, tradesController.getAllTrades);
 router.get('/:id', isAuth, tradesController.getTradeById);
-router.delete('/:id', tradesController.deleteTradeById);
-router.patch('/:id', tradesController.updateTradeRecord);
+router.delete('/:id', isAuth, tradesController.deleteTradeById);
+router.patch('/:id', isAuth, tradesController.updateTradeRecord);
 router.post('/csv/upload', uploadFile.single('file'), csvController.upload);
 router.get('/', getTrades);
 

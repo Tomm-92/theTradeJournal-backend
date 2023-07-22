@@ -10,18 +10,12 @@ const createUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  const auth = req.headers.authorization;
-  if (auth === 'passwordtest') {
-    try {
-      const users = await Users.findAll();
-      res.status(200).json(users);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  } else {
-    res.status(401);
-    res.send('Access forbidden');
+  try {
+    const users = await Users.findAll();
+    res.status(200).json(users);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 

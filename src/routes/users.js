@@ -2,14 +2,24 @@ const express = require('express');
 const router = express.Router();
 const usersController = require('../controllers/users');
 
-router.delete('/:id', usersController.deleteUser);
+const isAuth = (req, res, next) => {
+  const auth = req.headers.authorization;
+  if (auth === process.env.USERS_API_KEY) {
+    next();
+  } else {
+    res.status(401);
+    res.send('Access denied');
+  }
+};
 
-router.get('/', usersController.getUsers);
+router.delete('/:id', isAuth, usersController.deleteUser);
 
-router.get('/:id', usersController.getUserById);
+router.get('/', isAuth, usersController.getUsers);
 
-router.patch('/:id', usersController.updateUser);
+router.get('/:id', isAuth, usersController.getUserById);
 
-router.post('/', usersController.createUser);
+router.patch('/:id', isAuth, usersController.updateUser);
+
+router.post('/', isAuth, usersController.createUser);
 
 module.exports = router;
